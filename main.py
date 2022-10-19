@@ -3,6 +3,7 @@ import re
 
 from os import getenv
 from asyncio import sleep
+from random import random
 from collections import defaultdict
 
 from pyrogram import Client, filters
@@ -66,10 +67,13 @@ async def echo(client, message: Message):
 async def not_me(client, message: Message):
     now = datetime.datetime.now()
     if (now.month == 10 and now.day == 20) and message.text in ['/polina_s_dr', '/polya_s_dr', '/pinka_s_dr']:
+        await sleep(random() * 10)
         await message.react(emoji="❤️‍🔥")
-    elif {'лиса', 'лисичка', 'фырка', 'лисик', 'лис', 'фырочка', 'лисы', 'лисички', 'фырки', 'лисики', 'fox', 'foxes'} & set(re.sub(r"\W+", ' ', message.text.lower()).split()):
+    if {'лиса', 'лисичка', 'фырка', 'лисик', 'лис', 'фырочка',
+        'лисы', 'лисички', 'фырки', 'лисики', 'fox', 'foxes',
+        'лися', 'лисица', 'лисицы'} & set(re.sub(r"\W+", ' ', message.text.lower()).split()):
         await message.react(emoji='😍')
-    elif '@cutefluffyfox' in message.text.lower().split():
+    if '@cutefluffyfox' in message.text.lower().split():
         # await message.reply(text='Привет, я Полинина ассистентка. Я сохранила ваше сообщение, в ближайшее время она вам на него ответит🌟')
         await message.forward(chat_id=app.me.id, disable_notification=False)
         await app.send_message(chat_id=app.me.id, text=message.link)
